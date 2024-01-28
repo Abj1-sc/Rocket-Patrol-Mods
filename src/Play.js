@@ -20,10 +20,10 @@ class Play extends Phaser.Scene {
         //rocket (p1)
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0)
         
-        keyFIRE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
+        // keyFIRE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
         keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
-        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
-        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+        // keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
+        // keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
 
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0)
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0)
@@ -63,6 +63,20 @@ class Play extends Phaser.Scene {
 
         this.timer = this.add.text(game.config.width/2, borderUISize + borderPadding * 2, this.tracker + 's',this.scoreConfig)
         
+        //mod speed up
+        this.speedUp = this.time.delayedCall(10000, () => {
+            this.ship01.moveSpeed += 3
+            this.ship02.moveSpeed += 3
+            this.ship03.moveSpeed += 3
+            this.nShip01.moveSpeed += 3
+            this.nShip02.moveSpeed += 3
+
+            this.speed = this.add.text(game.config.width/2, game.config.height / 2, 'SPEED UP',this.scoreConfig)
+            setTimeout(() =>  {
+                this.speed.destroy()
+            }, 1000);
+        }, null, this)
+
         this.CLOCK = this.time.addEvent({
             callback: this.clockM,
             callbackScope: this,
@@ -74,7 +88,12 @@ class Play extends Phaser.Scene {
 
     update() {
 
-        if (!this.p1Rocket.isFiring && this.input.x <= game.config.width - borderUISize - this.p1Rocket.width && this.input.x >= borderUISize + this.p1Rocket.width){
+        // if (!this.p1Rocket.isFiring && this.input.x <= game.config.width - borderUISize - this.p1Rocket.width && this.input.x >= borderUISize + this.p1Rocket.width){
+        //     this.p1Rocket.x = this.input.x
+        // }
+
+        //Mod
+        if (this.input.x <= game.config.width - borderUISize - this.p1Rocket.width && this.input.x >= borderUISize + this.p1Rocket.width){
             this.p1Rocket.x = this.input.x
         }
 
