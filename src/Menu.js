@@ -6,8 +6,10 @@ class Menu extends Phaser.Scene {
     preload() {
         // assets
         this.load.image('rocket', './assets/rocket.png')
+        this.load.image('rocket2', './assets/rocket2.png')
         this.load.image('spaceship', './assets/spaceship.png')
         this.load.image('starfield', './assets/starfield.png')
+        this.load.image('speedship', './assets/speedShip.png')
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {
             frameWidth: 64,
@@ -48,10 +50,12 @@ class Menu extends Phaser.Scene {
         menuConfig.backgroundColor = '#00FF00'
         menuConfig.color = '#000'
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press <- for Novice or -> for Expert', menuConfig).setOrigin(0.5)
+        this.add.text(game.config.width/2, game.config.height/2 + 2 * (borderUISize + borderPadding), 'Press 2 for 2-player mode', menuConfig).setOrigin(0.5)
     
         // define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+        keyTwo = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO)
     }
 
     update() {
@@ -59,7 +63,8 @@ class Menu extends Phaser.Scene {
             //easy
             game.settings = {
                 spaceshipSpeed: 3,
-                gameTimer: 60000
+                gameTimer: 60000,
+                twoPlayer: false
             }
             this.sound.play('sfx-select')
             this.scene.start('playScene')
@@ -68,7 +73,18 @@ class Menu extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
             game.settings = {
                 spaceshipSpeed: 4,
-                gameTimer: 45000
+                gameTimer: 45000,
+                twoPlayer: false
+            }
+            this.sound.play('sfx-select')
+            this.scene.start('playScene') 
+        }
+
+        if(Phaser.Input.Keyboard.JustDown(keyTwo)) {
+            game.settings = {
+                spaceshipSpeed: 3,
+                gameTimer: 60000,
+                twoPlayer: true
             }
             this.sound.play('sfx-select')
             this.scene.start('playScene') 

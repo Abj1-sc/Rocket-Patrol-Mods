@@ -29,6 +29,12 @@ class Play extends Phaser.Scene {
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0)
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0)
 
+        //smaller, faster, new ships, worth 50 points
+        this.nShip01 = new Spaceship(this, game.config.width, borderUISize*7 + borderPadding * 6, 'speedship', 0, 50).setOrigin(0, 0).setScale(0.75)
+        this.nShip02 = new Spaceship(this, game.config.width + borderUISize*10, borderUISize*7 + borderPadding * 6, 'speedship', 0, 50).setOrigin(0, 0).setScale(0.75)
+        this.nShip01.small()
+        this.nShip02.small()
+
         //score
         this.p1Score = 0
 
@@ -75,6 +81,8 @@ class Play extends Phaser.Scene {
             this.ship01.update()
             this.ship02.update()
             this.ship03.update()
+            this.nShip01.update()
+            this.nShip02.update()
         }
 
 
@@ -89,6 +97,14 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset()
             this.shipExplode(this.ship01)   
         }
+        if(this.checkCollision(this.p1Rocket, this.nShip01)) {
+            this.p1Rocket.reset()
+            this.shipExplode(this.nShip01)   
+        }
+        if(this.checkCollision(this.p1Rocket, this.nShip02)) {
+            this.p1Rocket.reset()
+            this.shipExplode(this.nShip02)   
+        }   
     }
 
     checkCollision(rocket, ship) {
