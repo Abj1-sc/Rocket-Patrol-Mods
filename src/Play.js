@@ -38,7 +38,7 @@ class Play extends Phaser.Scene {
         //score
         this.p1Score = 0
 
-        let scoreConfig = {
+        this.scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#F3B141',
@@ -51,21 +51,29 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         }
 
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig)
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, this.scoreConfig)
 
         // GAME OVER flag
         this.gameOver = false
 
-        // 60-second play clock
-        scoreConfig.fixedWidth = 0
-        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5)
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart', scoreConfig).setOrigin(0.5)
-            this.gameOver = true
-        }, null, this)
+        this.scoreConfig.fixedWidth = 0
+        //Mod
+        //clock display
+        this.tracker = game.settings.gameTimer / 1000
+
+        this.timer = this.add.text(game.config.width/2, borderUISize + borderPadding * 2, this.tracker + 's',this.scoreConfig)
+        
+        this.CLOCK = this.time.addEvent({
+            callback: this.clockM,
+            callbackScope: this,
+            delay: 1000, // 1000 = 1 second
+            loop: true
+        })
+
     }
 
     update() {
+
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyRESET)) {
             this.scene.restart()
         }
@@ -85,25 +93,34 @@ class Play extends Phaser.Scene {
             this.nShip02.update()
         }
 
+        if(this.p1Rocket.y <= borderUISize * 3 + borderPadding + 1) {
+            this.tracker -= 3
+        }
 
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset()
-            this.shipExplode(this.ship03)           }
+            this.shipExplode(this.ship03)
+            this.tracker += 1
+        }
         if(this.checkCollision(this.p1Rocket, this.ship02)) {
             this.p1Rocket.reset()
             this.shipExplode(this.ship02)   
+            this.tracker += 1
         }
         if(this.checkCollision(this.p1Rocket, this.ship01)) {
             this.p1Rocket.reset()
-            this.shipExplode(this.ship01)   
+            this.shipExplode(this.ship01)
+            this.tracker += 1
         }
         if(this.checkCollision(this.p1Rocket, this.nShip01)) {
             this.p1Rocket.reset()
             this.shipExplode(this.nShip01)   
+            this.tracker += 1
         }
         if(this.checkCollision(this.p1Rocket, this.nShip02)) {
             this.p1Rocket.reset()
-            this.shipExplode(this.nShip02)   
+            this.shipExplode(this.nShip02)  
+            this.tracker += 1 
         }   
     }
 
@@ -130,6 +147,19 @@ class Play extends Phaser.Scene {
         this.scoreLeft.text = this.p1Score
         this.sound.play('sfx-explosion')
     }
+    
+    //clock mod
+    clockM() {
+        if(this.tracker > 0) {
+            this.tracker -= 1
+            this.timer.setText(this.tracker + 's')
+        } else {
+            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', this.scoreConfig).setOrigin(0.5)
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart', this.scoreConfig).setOrigin(0.5)
+            this.gameOver = true
+        }
+    }
+
 }
 
 
