@@ -64,7 +64,7 @@ class Play extends Phaser.Scene {
         this.timer = this.add.text(game.config.width/2, borderUISize + borderPadding * 2, this.tracker + 's',this.scoreConfig)
         
         //mod speed up
-        this.speedUp = this.time.delayedCall(10000, () => {
+        this.speedUp = this.time.delayedCall(30000, () => {
             this.ship01.moveSpeed += 3
             this.ship02.moveSpeed += 3
             this.ship03.moveSpeed += 3

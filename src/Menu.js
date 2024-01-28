@@ -55,7 +55,6 @@ class Menu extends Phaser.Scene {
         // define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
-        keyTwo = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO)
     }
 
     update() {
@@ -73,7 +72,7 @@ class Menu extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
             game.settings = {
                 spaceshipSpeed: 4,
-                gameTimer: 60000,
+                gameTimer: 45000,
                 twoPlayer: false
             }
             this.sound.play('sfx-select')
