@@ -74,6 +74,12 @@ class Play extends Phaser.Scene {
 
     update() {
 
+        if (!this.p1Rocket.isFiring && this.input.x <= game.config.width - borderUISize - this.p1Rocket.width && this.input.x >= borderUISize + this.p1Rocket.width){
+            this.p1Rocket.x = this.input.x
+        }
+
+        this.timer.setText(this.tracker + 's')
+
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyRESET)) {
             this.scene.restart()
         }
@@ -83,6 +89,12 @@ class Play extends Phaser.Scene {
         }
 
         this.starfield.tilePositionX -= 4
+        
+        this.input.on('pointerdown', function (pointer) {
+            if (pointer.leftButtonDown()) {
+                this.p1Rocket.fire();
+            }
+        }, this);
 
         if(!this.gameOver) {
             this.p1Rocket.update()
@@ -100,27 +112,27 @@ class Play extends Phaser.Scene {
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset()
             this.shipExplode(this.ship03)
-            this.tracker += 1
+            this.tracker += 2
         }
         if(this.checkCollision(this.p1Rocket, this.ship02)) {
             this.p1Rocket.reset()
             this.shipExplode(this.ship02)   
-            this.tracker += 1
+            this.tracker += 2
         }
         if(this.checkCollision(this.p1Rocket, this.ship01)) {
             this.p1Rocket.reset()
             this.shipExplode(this.ship01)
-            this.tracker += 1
+            this.tracker += 2
         }
         if(this.checkCollision(this.p1Rocket, this.nShip01)) {
             this.p1Rocket.reset()
             this.shipExplode(this.nShip01)   
-            this.tracker += 1
+            this.tracker += 2
         }
         if(this.checkCollision(this.p1Rocket, this.nShip02)) {
             this.p1Rocket.reset()
             this.shipExplode(this.nShip02)  
-            this.tracker += 1 
+            this.tracker += 2 
         }   
     }
 
@@ -160,6 +172,7 @@ class Play extends Phaser.Scene {
         }
     }
 
+    
 }
 
 
